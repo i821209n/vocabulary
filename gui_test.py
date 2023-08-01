@@ -30,6 +30,12 @@
 
 import tkinter as tk
 from tkinter import messagebox
+from tkinter import font
+
+name_entry = None
+page_1_frame = None
+page_2_frame = None
+name_entry_page_2 = None
 
 def greet_user():
     user_name = name_entry.get()
@@ -56,23 +62,31 @@ def switch_to_page_1():
     page_1_frame.pack()
 
 def main():
+    global name_entry, page_1_frame, page_2_frame, name_entry_page_2
+
     root = tk.Tk()
     root.title("Page Switching GUI")
+
+    window_width = 800
+    window_height = 600
+    root.geometry(f"{window_width}x{window_height}")
+
+    custom_font = font.Font(size=20)
 
     # Page 1
     page_1_frame = tk.Frame(root)
     page_1_frame.pack()
 
-    label = tk.Label(page_1_frame, text="Enter your name:")
+    label = tk.Label(page_1_frame, text="Enter your name:", font=custom_font)
     label.pack(pady=10)
 
-    name_entry = tk.Entry(page_1_frame)
+    name_entry = tk.Entry(page_1_frame, font=custom_font, width=60)
     name_entry.pack(pady=5)
 
-    greet_button = tk.Button(page_1_frame, text="Greet Page 1", command=greet_user)
+    greet_button = tk.Button(page_1_frame, text="Greet Page 1", command=greet_user, font=custom_font)
     greet_button.pack(pady=10)
 
-    switch_button = tk.Button(page_1_frame, text="Switch to Page 2", command=switch_to_page_2)
+    switch_button = tk.Button(page_1_frame, text="Switch to Page 2", command=switch_to_page_2, font=custom_font)
     switch_button.pack(pady=5)
 
     # Page 2
