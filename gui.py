@@ -52,7 +52,6 @@ def save_word(word_entry, definition_entry, sentence_entry):
     elif(sentence == ""):
         messagebox.showwarning("Warning", "Please enter a sentence.")
     else:
-        # TODO : implement save words to google sheets
         sheets.save_word(word, definition, sentence)
         print("save the word!!")
         messagebox.showinfo("Saving", f"save {word} success")
