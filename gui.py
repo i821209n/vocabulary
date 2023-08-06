@@ -2,6 +2,7 @@
 import tkinter as tk
 from tkinter import font
 from tkinter import messagebox
+import sheets
 
 #variables
 root = None
@@ -13,6 +14,7 @@ calendar_page_frame = None
 
 #apis
 def switch_to_adding_word_page():
+    sheets.add_word_sheet_init()
     first_page_frame.pack_forget()
     add_word_page_frame.pack()
 
@@ -51,6 +53,7 @@ def save_word(word_entry, definition_entry, sentence_entry):
         messagebox.showwarning("Warning", "Please enter a sentence.")
     else:
         # TODO : implement save words to google sheets
+        sheets.save_word(word, definition, sentence)
         print("save the word!!")
         messagebox.showinfo("Saving", f"save {word} success")
         word_entry.delete(0, tk.END)
