@@ -1,5 +1,5 @@
-import gui
-import sheets
+import gui.gui as gui
+import sheets.sheets as sheets
 
 def main():
     sheets.sheets_init()

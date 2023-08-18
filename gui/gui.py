@@ -2,7 +2,7 @@
 import tkinter as tk
 from tkinter import font
 from tkinter import messagebox
-import sheets
+import sheets.sheets as sheets
 
 #variables
 root = None
