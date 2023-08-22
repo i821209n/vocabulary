@@ -1,7 +1,7 @@
 add_word_page_frame = None
 
 def switch_to_add_word_page(cur_page):
-    sheets.add_word_sheet_init()
+    # sheets.add_word_sheet_init()
     cur_page.pack_forget()
     add_word_page_frame.pack()
 

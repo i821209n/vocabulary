@@ -15,6 +15,8 @@ def sheets_init():
     sheet_url = "https://docs.google.com/spreadsheets/d/1X8eoI34Mj5ULdyJ03lhBuhW1yPFmj7ZfkwUCdJDDN9M/" 
     global_sheet = gc.open_by_url(sheet_url)
 
+    add_word_sheet_init()
+
 class google_sheet:
     def __init__(self, sheet_name):
         try:
@@ -26,10 +28,11 @@ class google_sheet:
     def write(self, position = "A1", content = "test"):    
         self.working_sheet.update_value(position, content)
 
-    def read(self, position = "A1"):
+    def read(self, position):
+        # print(position)
         content = self.working_sheet.cell(position)
-        print(content)
-        print(content.value)
+        # print(content)
+        return content.value
 
     def append(self, values = []):
         try:
@@ -78,3 +81,9 @@ def save_word(word, definition, sentence):
 
 def get_word_num():
     return word_id
+
+def get_word(id):
+    return add_word_sheet.read("B"+str(id))
+
+def get_definition(id):
+    return add_word_sheet.read("C"+str(id))

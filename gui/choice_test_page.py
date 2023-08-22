@@ -1,5 +1,6 @@
 choice_test_page_frame = None
 question_num_label = None
+question_label = None
 next_btn = None
 answer_1 = None
 answer_2 = None
@@ -9,6 +10,47 @@ question_num = 1
 total_words_num = 0
 total_question_num = 0
 question_pool = []
+qid = 0
+qa_dict = {}
+right_answer = 0
+default_color = None
+bingo_color = "green"
+wrong_color = "red"
+
+def setup_ans_btn():
+    global qa_dict, right_answer
+    qa_dict = {}
+    qa_list = [0, 0, 0, 0]
+    num_to_ans_btn = {1:answer_1, 2:answer_2, 3:answer_3, 4:answer_4}
+    right_answer = random.randint(1, 4)
+    print(f"right answer = {right_answer}")
+    for i in range(len(qa_list)):
+        if (i+1 == right_answer):
+            qa_list[i] = qid
+            num_to_ans_btn[i+1].config(text=sheets.get_word(qa_list[i]))
+            continue
+        while True:
+            ansId = random.randint(1, total_words_num)
+            if (ansId != qid) and (ansId not in qa_list):
+                qa_list[i] = ansId
+                num_to_ans_btn[i+1].config(text=sheets.get_word(qa_list[i]))
+                break
+    
+    print(qa_list)
+
+def set_question():
+    global qid
+    num = len(question_pool)
+    qid = question_pool[random.randint(0, num-1)]
+    question = sheets.get_definition(qid)
+    question_label.config(text=question)
+    print(qid, question)
+    question_pool.remove(qid)
+    print(question_pool)
+
+def set_qa():
+    set_question()
+    setup_ans_btn()  
 
 def question_init():
     global question_pool
@@ -31,7 +73,9 @@ def switch_to_choice_test_page(cur_page):
     question_num = 1
     question_num_label.config(text=f"{question_num}/{total_question_num}")
     next_btn.config(state="disabled", text="next")
+    enableAllAnsBnt()
     question_init()
+    set_qa()
     cur_page.pack_forget()
     choice_test_page_frame.pack()
 
@@ -52,9 +96,10 @@ def next_callback():
     global question_num
     next_btn.config(state="disabled")
     enableAllAnsBnt()
-    if(question_num < 10):
+    if(question_num < total_question_num):
         question_num += 1
         question_num_label.config(text=f"{question_num}/{total_question_num}")
+        set_qa()
     else:
         messagebox.showinfo("done", "test done return to test page")
         tp.switch_to_test_page(choice_test_page_frame)
@@ -70,7 +115,7 @@ def answer_callback(answer_num):
     # messagebox.showinfo("answer", "answer callback is still working!")
 
 def choice_test_page_init():
-    global choice_test_page_frame, question_num_label, next_btn, answer_1, answer_2, answer_3, answer_4
+    global choice_test_page_frame, question_num_label, question_label, next_btn, answer_1, answer_2, answer_3, answer_4, default_color
 
     choice_test_page_frame = tk.Frame(gui.root)
 
@@ -99,8 +144,12 @@ def choice_test_page_init():
     back_btn = tk.Button(choice_test_page_frame, text="back", command=lambda: tp.switch_to_test_page(choice_test_page_frame), font=gui.custom_font)
     back_btn.pack(pady=10)
 
+    default_color = answer_1.cget("bg")
+    print(default_color)
+
 import tkinter as tk
 import gui.gui as gui
 import gui.test_page as tp
 import sheets.sheets as sheets
+import random
 from tkinter import messagebox
