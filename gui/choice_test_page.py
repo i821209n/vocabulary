@@ -6,15 +6,32 @@ answer_2 = None
 answer_3 = None
 answer_4 = None
 question_num = 1
+total_words_num = 0
+total_question_num = 0
+question_pool = []
+
+def question_init():
+    global question_pool
+    question_pool = []
+    for i in range(total_question_num):
+        question_pool.append(i+1)
+    print(question_pool)
 
 def switch_to_choice_test_page(cur_page):
-    global question_num
+    global question_num, total_words_num, total_question_num
     # TODO : implement choice test
-    # print("choice test")
-    # messagebox.showinfo("choice_test", "choice test is still working!")
+    total_words_num = sheets.get_word_num()
+    if(total_words_num == 0):
+        messagebox.showinfo("choice test", "no word is availble")
+        return
+    elif(total_words_num > 10):
+        total_question_num = 10
+    else:
+        total_question_num = total_words_num
     question_num = 1
-    question_num_label.config(text=f"{question_num}/10")
+    question_num_label.config(text=f"{question_num}/{total_question_num}")
     next_btn.config(state="disabled", text="next")
+    question_init()
     cur_page.pack_forget()
     choice_test_page_frame.pack()
 
@@ -37,7 +54,7 @@ def next_callback():
     enableAllAnsBnt()
     if(question_num < 10):
         question_num += 1
-        question_num_label.config(text=f"{question_num}/10")
+        question_num_label.config(text=f"{question_num}/{total_question_num}")
     else:
         messagebox.showinfo("done", "test done return to test page")
         tp.switch_to_test_page(choice_test_page_frame)
@@ -85,4 +102,5 @@ def choice_test_page_init():
 import tkinter as tk
 import gui.gui as gui
 import gui.test_page as tp
+import sheets.sheets as sheets
 from tkinter import messagebox

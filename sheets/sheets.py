@@ -75,3 +75,6 @@ def save_word(word, definition, sentence):
         add_word_sheet.append(ready_to_save)       
     else:
         print("add word sheet has not initialized")
+
+def get_word_num():
+    return word_id
