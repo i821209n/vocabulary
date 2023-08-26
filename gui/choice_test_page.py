@@ -16,9 +16,10 @@ right_answer = 0
 default_color = None
 bingo_color = "green"
 wrong_color = "red"
+isAnswered = 0
 
 def setup_ans_btn():
-    global qa_dict, right_answer
+    global qa_dict, right_answer, isAnswered
     qa_dict = {}
     qa_list = [0, 0, 0, 0]
     num_to_ans_btn = {1:answer_1, 2:answer_2, 3:answer_3, 4:answer_4}
@@ -35,6 +36,8 @@ def setup_ans_btn():
                 qa_list[i] = ansId
                 num_to_ans_btn[i+1].config(text=sheets.get_word(qa_list[i]))
                 break
+    clearAllAnsBntColor()
+    isAnswered = 0
     
     print(qa_list)
 
@@ -73,7 +76,7 @@ def switch_to_choice_test_page(cur_page):
     question_num = 1
     question_num_label.config(text=f"{question_num}/{total_question_num}")
     next_btn.config(state="disabled", text="next")
-    enableAllAnsBnt()
+    # enableAllAnsBnt()
     question_init()
     set_qa()
     cur_page.pack_forget()
@@ -91,11 +94,17 @@ def enableAllAnsBnt():
     answer_3.config(state="normal")
     answer_4.config(state="normal")
 
+def clearAllAnsBntColor():
+    answer_1.config(fg=default_color)
+    answer_2.config(fg=default_color)
+    answer_3.config(fg=default_color)
+    answer_4.config(fg=default_color)
+
 def next_callback():
     # TODO : implement next callback
     global question_num
     next_btn.config(state="disabled")
-    enableAllAnsBnt()
+    # enableAllAnsBnt()
     if(question_num < total_question_num):
         question_num += 1
         question_num_label.config(text=f"{question_num}/{total_question_num}")
@@ -107,8 +116,19 @@ def next_callback():
     
 def answer_callback(answer_num):
     # TODO : implement answer callback
+    global isAnswered
+    if (isAnswered == 1):
+        return
+    else:
+        isAnswered = 1
+    num_to_ans_btn = {1:answer_1, 2:answer_2, 3:answer_3, 4:answer_4}
     next_btn.config(state="normal")
-    disableAllAnsBnt()
+    
+    if(answer_num == right_answer):
+        num_to_ans_btn[answer_num].config(fg=bingo_color)
+    else:
+        num_to_ans_btn[answer_num].config(fg=wrong_color)
+    # disableAllAnsBnt()
     if(question_num == 10):
         next_btn.config(text="done")
     print(f"answer number : {answer_num}")
@@ -144,7 +164,7 @@ def choice_test_page_init():
     back_btn = tk.Button(choice_test_page_frame, text="back", command=lambda: tp.switch_to_test_page(choice_test_page_frame), font=gui.custom_font)
     back_btn.pack(pady=10)
 
-    default_color = answer_1.cget("bg")
+    default_color = answer_1.cget("fg")
     print(default_color)
 
 import tkinter as tk
