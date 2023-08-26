@@ -17,6 +17,7 @@ default_color = None
 bingo_color = "green"
 wrong_color = "red"
 isAnswered = 0
+bingo_answer_num = 0
 
 def setup_ans_btn():
     global qa_dict, right_answer, isAnswered
@@ -63,7 +64,7 @@ def question_init():
     print(question_pool)
 
 def switch_to_choice_test_page(cur_page):
-    global question_num, total_words_num, total_question_num
+    global question_num, total_words_num, total_question_num, bingo_answer_num
     # TODO : implement choice test
     total_words_num = sheets.get_word_num()
     if(total_words_num == 0):
@@ -79,6 +80,7 @@ def switch_to_choice_test_page(cur_page):
     # enableAllAnsBnt()
     question_init()
     set_qa()
+    bingo_answer_num = 0
     cur_page.pack_forget()
     choice_test_page_frame.pack()
 
@@ -110,13 +112,13 @@ def next_callback():
         question_num_label.config(text=f"{question_num}/{total_question_num}")
         set_qa()
     else:
-        messagebox.showinfo("done", "test done return to test page")
+        messagebox.showinfo("done", f"test done \nresult : {bingo_answer_num}/{total_question_num}\nreturn to test page")
         tp.switch_to_test_page(choice_test_page_frame)
     print("next button press")
     
 def answer_callback(answer_num):
     # TODO : implement answer callback
-    global isAnswered
+    global isAnswered, bingo_answer_num
     if (isAnswered == 1):
         return
     else:
@@ -126,6 +128,7 @@ def answer_callback(answer_num):
     
     if(answer_num == right_answer):
         num_to_ans_btn[answer_num].config(fg=bingo_color)
+        bingo_answer_num += 1
     else:
         num_to_ans_btn[answer_num].config(fg=wrong_color)
     # disableAllAnsBnt()
