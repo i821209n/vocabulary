@@ -87,3 +87,6 @@ def get_word(id):
 
 def get_definition(id):
     return add_word_sheet.read("C"+str(id))
+
+def get_example(id):
+    return add_word_sheet.read("D"+str(id))

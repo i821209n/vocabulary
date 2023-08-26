@@ -129,6 +129,10 @@ def answer_callback(answer_num):
     else:
         num_to_ans_btn[answer_num].config(fg=wrong_color)
     # disableAllAnsBnt()
+    text = question_label.cget("text")
+    text = text + "\nex : " + sheets.get_example(qid)
+    question_label.config(text=text)
+    print(text)
     if(question_num == 10):
         next_btn.config(text="done")
     print(f"answer number : {answer_num}")
